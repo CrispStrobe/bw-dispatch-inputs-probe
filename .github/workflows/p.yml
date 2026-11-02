@@ -1,0 +1,14 @@
+name: inputs-probe
+on:
+  workflow_dispatch:
+    inputs:
+      a: {required: true, type: string}
+      request_sha256: {required: false, default: '', type: string}
+      tag_name: {required: false, default: '', type: string}
+      protocol: {required: true, default: x, type: choice, options: [x, y]}
+permissions: {contents: read}
+jobs:
+  p:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: python3 -c "import json,os;print('INPUTS='+json.dumps(json.load(open(os.environ['GITHUB_EVENT_PATH'])).get('inputs'),sort_keys=True))"
